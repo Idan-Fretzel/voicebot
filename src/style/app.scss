@@ -1,0 +1,26 @@
+/* color variables */
+$color-primary: #ffde03;
+$color-secondary: #0336ff;
+
+$color-gray-light-1: #fafafa;
+$color-gray-light-2: #eeeeee;
+$color-gray-light-3: #e0e0e0;
+
+$color-gray-dark-1: #424242;
+$color-gray-dark-2: #242323;
+$color-gray-dark-3: #131212;
+
+#root {
+    height: 90vh;
+    width: 100vw;
+}
+
+button {
+  border: none;
+  background: none;
+}
+
+.App {
+    height: 90vh;
+    width: 100vw;
+}

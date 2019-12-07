@@ -1,0 +1,10 @@
+.btn {
+  &--medium {
+    height: 100px;
+    width: 100px;
+  }
+
+  &--circle {
+    border-radius: 1000px;
+  }
+}
