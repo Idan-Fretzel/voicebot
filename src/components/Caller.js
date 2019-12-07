@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ReactMic } from 'react-mic'
+
 import Assets from "../assets";
 import Button from "./Button";
 
@@ -7,27 +9,69 @@ const Caller = () => {
   let [isRecording, setIsRecording] = useState(false);
   let [timerId, setTimerId] = useState(null);
 
-  const startRecording = () => {
+  const handleRecordClicked = () => {
     if (isRecording && timerId) {
-      clearInterval(timerId);
-      setTimerId(null);
-      setIsRecording(false);
+      stopRecording()
     } else {
-      setIsRecording(true);
-      setTimerId(
-        setInterval(() => {
-          setCounter(counter++);
-        }, 1000)
-      );
-      setCounter(0)
+      startRecording()
     }
+  }
+
+  const startRecording = () => {
+    setIsRecording(true);
+    setTimerId(
+      setInterval(() => {
+        setCounter(counter++);
+      }, 1000)
+    );
   };
+
+
+  const stopRecording = () => {
+    clearInterval(timerId);
+    setTimerId(null);
+    setIsRecording(false);
+    setCounter(0)
+  }
+
+  const generateTimerString = (count) => {
+    const dateObj = new Date(count * 1000);
+    const hours = dateObj.getUTCHours();
+    const minutes = dateObj.getUTCMinutes();
+    const seconds = dateObj.getSeconds();
+    return hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+  }
+
+  function onData(recordedBlob) {
+    console.log('chunk of real-time data is: ', recordedBlob);
+  }
+
+  function onStop(recordedBlob) {
+    console.log('recordedBlob is: ', recordedBlob);
+  }
 
   return (
     <div className='caller'>
-      <h3 className='caller--title header--3'>{`hello user - ${isRecording ? counter : "00:00:00"}`}</h3>
-      <Button className='caller--button-call' icon={Assets.CALL} onClick={() => startRecording()} />
-      <Button className='caller--button-record' icon={Assets.MIC} onClick={() => startRecording()} />
+      <div className='caller--header'>
+        <h3 className='caller--title header--3'>{generateTimerString(counter)}</h3>
+      </div>
+      <div className='caller--content'>
+        <ReactMic
+          record={isRecording}
+          visualSetting="sinewave"
+          onStop={onStop}
+          onData={onData}
+          strokeColor='#fff'
+          backgroundColor='#000'
+        />
+
+      </div>
+      <div className='caller--buttons'>
+        <Button className='caller--button-call' icon={Assets.CALL} onClick={() => handleRecordClicked()} />
+        <Button className='caller--button-record' icon={Assets.MIC} onClick={() => handleRecordClicked()} />
+      </div>
     </div>
   );
 };
