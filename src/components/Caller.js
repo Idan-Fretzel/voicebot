@@ -60,6 +60,7 @@ const Caller = () => {
       <div className='caller--content'>
         <ReactMic
           record={isRecording}
+          className='recorder'
           visualSetting="sinewave"
           onStop={onStop}
           onData={onData}
